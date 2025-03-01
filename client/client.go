@@ -13,11 +13,8 @@ type Client struct {
 }
 
 func New(addr string) *Client {
-
-
 	return &Client{
 		addr: addr,
-		
 	}
 }
 
@@ -27,7 +24,6 @@ func (c *Client) Set(ctx context.Context, key string, val string) error {
 		return err
 	}
 
-	// buf := &bytes.Buffer{}
 	var buf bytes.Buffer
 	wr := resp.NewWriter(&buf)
 	wr.WriteArray([]resp.Value{
@@ -45,7 +41,6 @@ func (c *Client) Get(ctx context.Context, key string) (string, error) {
 		return "", err
 	}
 
-	// buf := &bytes.Buffer{}
 	var buf bytes.Buffer
 	wr := resp.NewWriter(&buf)
 	wr.WriteArray([]resp.Value{

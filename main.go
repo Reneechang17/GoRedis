@@ -28,7 +28,6 @@ type Server struct {
 	addPeerCh chan *Peer
 	quitCh    chan struct{}
 	msgCh     chan Message
-
 	kv *KV
 }
 
@@ -52,6 +51,7 @@ func (s *Server) Start() error {
 		return err
 	}
 	s.ln = ln
+
 	go s.loop()
 
 	slog.Info("server running", "listenAddr", s.ListenAddr)
@@ -89,8 +89,8 @@ func (s *Server) loop() {
 			}
 		case <-s.quitCh:
 			return
-		case p := <-s.addPeerCh:
-			s.peers[p] = true
+		case peer := <-s.addPeerCh:
+			s.peers[peer] = true
 		}
 	}
 }
@@ -122,7 +122,7 @@ func main() {
 	time.Sleep(time.Second)
 
 	c := client.New("localhost:5001")
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 10; i++ {
 		if err := c.Set(context.TODO(), fmt.Sprintf("foo_%d", i), fmt.Sprintf("bar_%d", i)); err != nil {
 			log.Fatal(err)
 		}
@@ -133,6 +133,4 @@ func main() {
 		}
 		fmt.Println("got this back =>",val)
 	}
-
-	time.Sleep(time.Second)
 }
