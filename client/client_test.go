@@ -6,7 +6,6 @@ import (
 	"log"
 	"testing"
 	"time"
-
 )
 
 func TestNewClient(t *testing.T) {
