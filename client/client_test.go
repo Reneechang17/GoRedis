@@ -4,9 +4,29 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"testing"
 	"time"
 )
+
+func TestNewClient1(t *testing.T) {
+	c, err := New("localhost:5001")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer c.Close()
+	time.Sleep(time.Second)
+	if err := c.Set(context.TODO(), "foo", 69); err != nil {
+		log.Fatal(err)
+	}
+	val, err := c.Get(context.TODO(), "foo")
+	if err != nil {
+		log.Fatal(err)
+	}
+	n, _ := strconv.Atoi(val)
+	fmt.Println(n)
+	fmt.Println("GET =>", val)
+}
 
 func TestNewClient(t *testing.T) {
 	c, err := New("localhost:5001")
